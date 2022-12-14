@@ -7,9 +7,27 @@ import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
+import {
+  ThemeProvider,
+  useTheme,
+  createMuiTheme,
+}
+  from "@material-ui/core/styles";
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#FF9800",
+    },
+    secondary: {
+      main: "#0098FF",
+    },
+  },
+});
 
 export function App() {
   const [messages, setMessages] = useState([])
+  const theme = useTheme()
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -38,22 +56,24 @@ export function App() {
   }, [messages])
   return (
     <>
-      <h1>Welcome to chat!</h1>
-      <Form addMessage={addMessage} />
-      <Box flexDirection="rowReverse">
-        <Grid container spacing={2} rowSpacing={5} columns={16} >
-          <Grid item xs={8} >
-            <Item>
-              <MessageList messages={messages} />
-            </Item>
+      <ThemeProvider theme={theme}>
+        <h1>Welcome to chat!</h1>
+        <Form addMessage={addMessage} />
+        <Box sx={{ gridTemplateColumns: 'repeat(2, 1fr)', }}>
+          <Grid container spacing={2} rowSpacing={5} columns={16} >
+            <Grid item xs={8}>
+              <Item>
+                <ChatList />
+              </Item>
+            </Grid>
+            <Grid item xs={8} >
+              <Item>
+                <MessageList messages={messages} />
+              </Item>
+            </Grid>
           </Grid>
-          <Grid item xs={8}>
-            <Item>
-              <ChatList />
-            </Item>
-          </Grid>
-        </Grid>
-      </Box>
+        </Box>
+      </ThemeProvider>
     </>
   )
 }

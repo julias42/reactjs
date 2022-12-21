@@ -23,11 +23,10 @@ export function Form({ addMessage }) {
 
   return (
     <>
-      <h1>Form</h1>
       <form onSubmit={handleSubmit}>
         <div className={styles.wrapper}>
           <ITextField
-            autoFocus
+            inputRef={input => input && input.focus()}
             variant="outlined"
             size="small"
             label="Message"

@@ -10,11 +10,11 @@ import Box from '@mui/material/Box';
 import {
   ThemeProvider,
   useTheme,
-  createMuiTheme,
+  createTheme,
 }
-  from "@material-ui/core/styles";
+  from "@mui/material/styles";
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: {
       main: "#FF9800",

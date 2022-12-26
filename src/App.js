@@ -1,80 +1,25 @@
-import { useState, useEffect } from 'react';
-import { MessageList } from './components/MessageList/MessageList';
-import { Form } from './components/Form/Form'
-import { AUTHOR } from './constants'
-import { ChatList } from './components/ChatList/ChatList'
-import Grid from '@mui/material/Grid';
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import {
-  ThemeProvider,
-  useTheme,
-  createTheme,
-}
-  from "@mui/material/styles";
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#FF9800",
-    },
-    secondary: {
-      main: "#0098FF",
-    },
-  },
-});
-
+import { Header } from "./components/Header/Header"
+import { Route, Routes } from "react-router-dom"
+import { MainPage } from "./pages/MainPage"
+import { ProfilePage } from "./pages/ProfilePage"
+import { ChatPage } from "./pages/ChatPage"
 export function App() {
-  const [messages, setMessages] = useState([])
-  const theme = useTheme()
 
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  }));
-
-  const addMessage = (newMessage) => {
-    setMessages([...messages, newMessage])
+  const onAddChat = (newChat) => {
+    console.log('newChat', newChat)
   }
 
-  useEffect(() => {
-    if (messages.length > 0 && messages[messages.length - 1].author === AUTHOR.user) {
-      const timeout = setTimeout(() => {
-        addMessage({
-          author: AUTHOR.bot,
-          text: 'Im BOT'
-        })
-      }, 1000)
-      return () => {
-        clearTimeout(timeout)
-      }
-    }
-  }, [messages])
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <h1>Welcome to chat!</h1>
-        <Form addMessage={addMessage} />
-        <Box sx={{ gridTemplateColumns: 'repeat(2, 1fr)', }}>
-          <Grid container spacing={2} rowSpacing={5} columns={16} >
-            <Grid item xs={8}>
-              <Item>
-                <ChatList />
-              </Item>
-            </Grid>
-            <Grid item xs={8} >
-              <Item>
-                <MessageList messages={messages} />
-              </Item>
-            </Grid>
-          </Grid>
-        </Box>
-      </ThemeProvider>
+      <Routes>
+        <Route path="/" element={<Header />} >
+          <Route index element={<MainPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="chat" element={<ChatPage onAddChat={onAddChat} />} />
+        </Route>
+        <Route path="*" element={<h1>404 page not FOUND</h1>} />
+      </Routes>
     </>
   )
 }
-export default App
+//export default App

@@ -1,34 +1,25 @@
-import { useState, useEffect} from 'react';
-import { MessageList } from './components/MessageList/MessageList';
-import{ Form }from './components/Form/Form'
-import { AUTHOR } from './constants'
+import { Header } from "./components/Header/Header"
+import { Route, Routes } from "react-router-dom"
+import { MainPage } from "./pages/MainPage"
+import { ProfilePage } from "./pages/ProfilePage"
+import { ChatPage } from "./pages/ChatPage"
+export function App() {
 
-export function App(){
-  const [messages, setMessages]= useState([])
-
-  const addMessage = (newMessage)=>{
-    setMessages([...messages, newMessage])
+  const onAddChat = (newChat) => {
+    console.log('newChat', newChat)
   }
-  useEffect(()=>{
-    if(messages.length > 0 && messages[messages.length - 1].author === AUTHOR.user){
-   const timeout = setTimeout(()=>{
-      addMessage({
-        author: AUTHOR.bot,
-        text:'Im BOT'
-      })
-    },1000)
-    return ()=>{
-      clearTimeout(timeout)
-    }
-  }
-  }, [messages])
 
-  return(
+  return (
     <>
-    <h1>Welcome to chat!</h1>
-    <Form addMessage={addMessage}/>
-    <MessageList messages={messages}/>
+      <Routes>
+        <Route path="/" element={<Header />} >
+          <Route index element={<MainPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="chat" element={<ChatPage onAddChat={onAddChat} />} />
+        </Route>
+        <Route path="*" element={<h1>404 page not FOUND</h1>} />
+      </Routes>
     </>
   )
 }
-export default App
+//export default App
